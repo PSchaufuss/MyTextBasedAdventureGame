@@ -3,12 +3,14 @@ public class Adventure
     private Room currentRoom;
     private Map map;
     private UserInterface ui;
+    private Player player;
 
     public Adventure()
     {
         map = new Map();
         currentRoom = map.getCurrentRoom();
         ui = new UserInterface();
+        player = new Player();
     }
 
 
@@ -20,8 +22,38 @@ public class Adventure
         {
             ui.printMessage(currentRoom.getDescription());
             ui.printMessage(currentRoom.getExitString());
+            ui.printMessage(player.getInventoryString());
             String command = ui.getUserInput("> ");
 
+            if (command.startsWith("take "))
+            {
+                String itemName = command.substring(5);
+                Item item = currentRoom.removeItem(itemName);
+                if (item == null)
+                {
+                    ui.printMessage("There is no such item here.");
+                }
+                else
+                {
+                    player.addItem(item);
+                    ui.printMessage("You have taken the " + itemName + ".");
+                }
+            }
+
+            else if (command.startsWith("drop"))
+                {
+                 String itemName = command.substring(5);
+                 Item item = player.removeItem(itemName);
+                 if (item == null)
+                 {
+                     ui.printMessage("You are not carrying that item.");
+                 }
+                 else
+                 {
+                     currentRoom.addItem(item);
+                     ui.printMessage("Your have dropped the " + itemName + ".");
+                 }
+                }
 
             command = command.toLowerCase().trim();
 
@@ -29,6 +61,7 @@ public class Adventure
             {
                 command = "go north";
             }
+
             else if (command.equals("south") || command.equals("s"))
             {
                 command = "go south";
@@ -55,6 +88,11 @@ public class Adventure
                 {
                     currentRoom = nextRoom;
                 }
+            }
+
+            else if (command.equals("inventory") || command.equals("inv") || command.equals("invent"))
+            {
+                ui.printMessage(player.getInventoryString());
             }
 
             else if (command.equals("look"))

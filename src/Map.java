@@ -48,10 +48,18 @@ public class Map
         room9.addExit("north", room6);
         room9.addExit("west", room8);
 
+
+        // Hvor våbene befinder sig
+        room1.addItem(new Item("Sword", "A sharp blade perfect for close combat."));
+        room3.addItem(new Item("Bow", "A long-range weapon for attacking enemies from afar."));
+        room8.addItem(new Item("Obsidian Wand", "A legendary mid-range weapon for the strongest enemies."));
+
         // Tilføjer startpunkt for spillet
 
         currentRoom = room1;
     }
+
+
 
     public Room getCurrentRoom()
     {

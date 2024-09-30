@@ -16,8 +16,8 @@ public class Room
     private String name;
     private String description;
     private Map<String, Room> exits;
-    /*
     private List<Item> items;
+    /*
     private List<Enemy> enemies;
     */
 
@@ -27,11 +27,51 @@ public class Room
         this.name = name;
         this.description = description;
         this.exits = new HashMap<>();
+        this.items = new ArrayList<>();
 
         /*
-        this.items = new ArrayList<>();
         this.enemies = new ArrayList<>();
          */
+    }
+
+    public void addItem(Item item)
+    {
+        items.add(item);
+    }
+
+    public Item removeItem(String itemName)
+    {
+        for (Item item : items)
+        {
+            if (item.getName().equalsIgnoreCase(itemName))
+            {
+                items.remove(item);
+                return item;
+            }
+        }
+        return null;
+    }
+
+    public List<Item> getItems()
+    {
+        return items;
+    }
+
+    public String getItemString()
+    {
+        if (items.isEmpty())
+        {
+            return "There are no items here.";
+        }
+        else
+        {
+            StringBuilder itemString = new StringBuilder("Items: ");
+            for (Item item : items)
+            {
+                itemString.append(item.getName()).append(" ");
+            }
+            return itemString.toString().trim();
+        }
     }
 
     // Opretter metode til at tilføje veje man kan gå fra rummet / exits
@@ -43,7 +83,7 @@ public class Room
     // Laver en returnering af rummets description
     public String getDescription()
     {
-        return description;
+        return description + "\n" + getItemString();
     }
     // Opretter String som viser de exits der er
     public String getExitString()
