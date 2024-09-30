@@ -31,7 +31,7 @@ public class Adventure
                 Item item = currentRoom.removeItem(itemName);
                 if (item == null)
                 {
-                    ui.printMessage("There is no such item here.");
+                    ui.printMessage("There is nothing like " + itemName + " to take around here.");
                 }
                 else
                 {
@@ -46,7 +46,7 @@ public class Adventure
                  Item item = player.removeItem(itemName);
                  if (item == null)
                  {
-                     ui.printMessage("You are not carrying that item.");
+                     ui.printMessage("You don't have anything like " + itemName + " in your inventory.");
                  }
                  else
                  {

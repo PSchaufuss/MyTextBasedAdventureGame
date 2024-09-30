@@ -33,28 +33,35 @@ public class Player
         return inventory;
     }
 
-    public String getInventoryString()
-    {
+    public String getInventoryString() {
+
         if (inventory.isEmpty())
         {
             return "Your inventory is empty.";
         }
+
         else if (inventory.size() == 1)
         {
             return "You are carrying: " + inventory.get(0).getName();
         }
+
         else if (inventory.size() == 2)
         {
             return "You are carrying: " + inventory.get(0).getName() + " & " + inventory.get(1).getName();
         }
+
         else
         {
             StringBuilder inventoryString = new StringBuilder("You are carrying: ");
             for (int i = 0; i < inventory.size() - 1; i++)
             {
-                inventoryString.append(inventory.get(i).getName()).append(", ");
+                inventoryString.append(inventory.get(i).getName());
+                if (i < inventory.size() - 2)
+                {
+                    inventoryString.append(", ");
+                }
             }
-            inventoryString.append("& ").append(inventory.get(inventory.size() - 1).getName());
+            inventoryString.append(" & ").append(inventory.get(inventory.size() - 1).getName());
             return inventoryString.toString();
         }
     }
