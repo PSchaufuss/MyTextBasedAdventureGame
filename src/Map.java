@@ -54,9 +54,17 @@ public class Map
         room3.addItem(new Item("Bow", "A long-range weapon for attacking enemies from afar."));
         room8.addItem(new Item("Obsidian Wand", "A legendary mid-range weapon for the strongest enemies."));
 
-        // Tilføjer startpunkt for spillet
+        // Hvor food befinder sig
+        room2.addItem(new Food("Rotten apple", "It may have expired; the color looks suspicious.", -20));
+        room6.addItem(new Food("Steak", "A juicy medium-rare steak from an unknown animal. Looks safe to eat though.", +50));
+        room8.addItem(new Food("Golden Banana", "Although you may have a hard time peeling it, I wouldn't hesitate eating it! It's golden!", +100));
+        room4.addItem(new Food("Salad", "A healthy refreshing meal! (Who am I kidding. It's calories. Eat it and smile)", +20));
+        room7.addItem(new Food("Raw Zombie Meat", "It looks contaminated. I wouldn't eat that.", -30));
 
+        // Tilføjer startpunkt for spillet
         currentRoom = room1;
+
+
     }
 
 

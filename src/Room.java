@@ -41,15 +41,38 @@ public class Room
 
     public Item removeItem(String itemName)
     {
+        Item item = findItemByPartialName(itemName);
+        if (item == null)
+        {
+            System.out.println("You have to be more specific.");
+            return null;
+        }
+        else
+        {
+            items.remove(item);
+            return item;
+        }
+    }
+
+    public Item findItemByPartialName(String partialName) {
+
+        Item foundItem = null;
+
         for (Item item : items)
         {
-            if (item.getName().equalsIgnoreCase(itemName))
+            if (item.getName().toLowerCase().contains(partialName.toLowerCase()))
             {
-                items.remove(item);
-                return item;
+
+                if (foundItem != null)
+                {
+                    return null;
+                }
+
+                foundItem = item;
             }
         }
-        return null;
+
+        return foundItem;
     }
 
     public List<Item> getItems()

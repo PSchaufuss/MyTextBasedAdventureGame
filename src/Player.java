@@ -4,10 +4,37 @@ import java.util.List;
 public class Player
 {
     private List<Item> inventory;
+    private int health;
+    private int maxHealth;
 
     public Player()
     {
         inventory = new ArrayList<>();
+        this.maxHealth = 100;
+        this.health = maxHealth;
+    }
+
+    public int getHealth()
+    {
+        return health;
+    }
+
+    public void changeHealth(int amount)
+    {
+        this.health += amount;
+        if (this.health > maxHealth)
+        {
+            this.health = maxHealth;
+        }
+        else if (this.health < 0)
+        {
+            this.health = 0;
+        }
+    }
+
+    public double getHealthPercentage()
+    {
+        return ((double) health / maxHealth) * 100;
     }
 
     public void addItem(Item item)
