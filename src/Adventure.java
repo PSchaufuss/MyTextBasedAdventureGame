@@ -39,14 +39,14 @@ public class Adventure
                 {
                     player.addItem(item);
                     currentRoom.removeItem(item.getName());
-                    ui.printMessage("You have taken the " + itemName + ".");
+                    ui.printMessage("You have taken the " + itemName + ". " + item.getDescription() + ".");
                 }
             }
 
             else if (command.startsWith("drop"))
             {
                 String itemName = command.substring(5);
-                Item item = player.removeItem(itemName);
+                Item item = player.findItemByPartialName(itemName);
 
                 if (item == null)
                 {
@@ -56,6 +56,7 @@ public class Adventure
                 else
                 {
                     currentRoom.addItem(item);
+                    player.removeItem(item.getName());
                     ui.printMessage("Your have dropped the " + itemName + ".");
                 }
             }
@@ -112,7 +113,7 @@ public class Adventure
 
             else if (command.equals("help"))
             {
-                ui.printMessage("Available commands: \nGo [North/East/South/West] \nLook \nHelp \nExit \nHealth \nEat");
+                ui.printMessage("Available commands: \nGo [North/East/South/West] \nLook \nHelp \nExit \nHealth \nEat \nTake \nEquip \nAttack");
             }
 
             else if (command.equals("health"))
@@ -139,6 +140,106 @@ public class Adventure
 
                 ui.printMessage("Health: " + player.getHealth() + " (" + (int) healthPercentage + "%) - " + healthDescription);
             }
+
+            else if (command.startsWith("equip"))
+            {
+                String weaponName = command.substring(6).trim();
+                Item item = player.findItemByPartialName(weaponName);
+
+                if (item == null)
+                {
+                    ui.printMessage("You do not have any item like " + weaponName);
+                }
+
+                else if (!(item instanceof Weapon))
+                {
+                    ui.printMessage(weaponName + " is not a weapon.");
+                }
+
+                else
+                {
+                    Weapon weapon = (Weapon) item;
+                    weapon.equip();
+                    ui.printMessage("You have equipped the " + weapon.getName() + ".");
+                }
+            }
+
+
+            else if (command.startsWith("attack"))
+            {
+                Enemy target = null;
+                String targetName = command.length() > 7 ? command.substring(7).trim() : "";
+
+                if (!targetName.isEmpty())
+                {
+                    for (Enemy enemy : currentRoom.getEnemies())
+                    {
+                        if (enemy.getName().toLowerCase().contains(targetName.toLowerCase()))
+                        {
+                            target = enemy;
+                            break;
+                        }
+                    }
+                }
+
+                if (target == null && !currentRoom.getEnemies().isEmpty())
+                {
+                    target = currentRoom.getEnemies().get(0);
+                }
+
+                if (target == null)
+                {
+                    ui.printMessage("There are no enemies here to attack.");
+                }
+
+                else
+                {
+                    Weapon equippedWeapon = player.getEquippedWeapon();
+                    int damage;
+
+                    if (equippedWeapon == null)
+                    {
+                        damage = 5;
+                        ui.printMessage("You attack " + target.getName() + " with your bare hands, dealing " + damage + " damage.");
+                    }
+
+                    else if (!equippedWeapon.canUse())
+                    {
+                        ui.printMessage("Your weapon cannot be used right now.");
+                        return;
+                    }
+
+                    else
+                    {
+                        damage = equippedWeapon.getDamage();
+                        ui.printMessage("You attack " + target.getName() + " with the " + equippedWeapon.getName() + ", dealing " + damage + " damage.");
+
+                       if (equippedWeapon instanceof RangedWeapon)
+                       {
+                           ((RangedWeapon) equippedWeapon).useAmmo();
+                           ui.printMessage("You used ammunition. Remaining ammo: " + ((RangedWeapon) equippedWeapon).getAmmunition());
+                       }
+                    }
+
+                    target.takeDamage(damage);
+                    ui.printMessage(target.getName() + " has " + target.getHealth() + " health remaining.");
+
+                        if (!target.isAlive())
+                        {
+                            ui.printMessage("You have defeated " + target.getName() + "!");
+                            currentRoom.removeEnemy(target);
+                        }
+                        else
+                        {
+                            int enemyDamage = target.getAttackPower();
+                            ui.printMessage(target.getName() + " attacks you, dealing " + enemyDamage + " damage!");
+
+                            target.attack(player);
+                            ui.printMessage("Your health is now: " + player.getHealth());
+                        }
+                }
+            }
+
 
             else if (command.startsWith("eat "))
             {

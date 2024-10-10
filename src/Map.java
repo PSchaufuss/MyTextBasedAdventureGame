@@ -50,9 +50,9 @@ public class Map
 
 
         // Hvor våbene befinder sig
-        room1.addItem(new Item("Sword", "A sharp blade perfect for close combat."));
-        room3.addItem(new Item("Bow", "A long-range weapon for attacking enemies from afar."));
-        room8.addItem(new Item("Obsidian Wand", "A legendary mid-range weapon for the strongest enemies."));
+        room1.addItem(new MeleeWeapon("Sword", "A sharp blade perfect for close combat.", 10));
+        room3.addItem(new RangedWeapon("Bow", "A long-range weapon for attacking enemies from afar.", 5, 15));
+        room8.addItem(new RangedWeapon("Obsidian Wand", "A legendary mid-range weapon for the strongest enemies.", 10, 20));
 
         // Hvor food befinder sig
         room2.addItem(new Food("Rotten apple", "It may have expired; the color looks suspicious.", -20));
@@ -60,6 +60,12 @@ public class Map
         room8.addItem(new Food("Golden Banana", "Although you may have a hard time peeling it, I wouldn't hesitate eating it! It's golden!", +100));
         room4.addItem(new Food("Salad", "A healthy refreshing meal! (Who am I kidding. It's calories. Eat it and smile)", +20));
         room7.addItem(new Food("Raw Zombie Meat", "It looks contaminated. I wouldn't eat that.", -30));
+
+        //Hvor monstre befinder sig
+        room2.addEnemy(new Enemy("Sneaky Goblin", 30, 5));
+        room5.addEnemy(new Enemy("Black Dragon", 100, 18));
+        room7.addEnemy(new Enemy("Zombie Dog", 40, 10));
+        room9.addEnemy(new Enemy("Angry MotherInLaw", 50, 8));
 
         // Tilføjer startpunkt for spillet
         currentRoom = room1;

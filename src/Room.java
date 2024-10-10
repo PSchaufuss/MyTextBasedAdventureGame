@@ -17,9 +17,7 @@ public class Room
     private String description;
     private Map<String, Room> exits;
     private List<Item> items;
-    /*
     private List<Enemy> enemies;
-    */
 
     // Jeg vil oprette en konstruktør, og initialisere exits, items og enemies som tomme lister.
     public Room(String name, String description)
@@ -28,10 +26,7 @@ public class Room
         this.description = description;
         this.exits = new HashMap<>();
         this.items = new ArrayList<>();
-
-        /*
         this.enemies = new ArrayList<>();
-         */
     }
 
     public void addItem(Item item)
@@ -103,11 +98,7 @@ public class Room
         exits.put(direction, room);
     }
 
-    // Laver en returnering af rummets description
-    public String getDescription()
-    {
-        return description + "\n" + getItemString();
-    }
+
     // Opretter String som viser de exits der er
     public String getExitString()
     {
@@ -124,27 +115,45 @@ public class Room
         return exits.get(direction);
     }
 
-    /*
-    public void addItem(Item item)
-    {
-        items.add(item);
-    }
-
-    public void addEnemey(Enemy enemy)
+    public void addEnemy(Enemy enemy)
     {
         enemies.add(enemy);
     }
 
-    public List<Item> getItems()
+    public void removeEnemy(Enemy enemy)
     {
-        return items;
+        enemies.remove(enemy);
     }
 
     public List<Enemy> getEnemies()
     {
         return enemies;
     }
-    */
 
+    public String getEnemyString()
+    {
+        if (enemies.isEmpty())
+        {
+            return "There are no enemies here.";
+        }
+
+        else
+        {
+            StringBuilder enemyString = new StringBuilder("Enemies: ");
+            for (Enemy enemy : enemies)
+            {
+                if (enemy != null)
+                {
+                    enemyString.append(enemy.getName()).append(" ");
+                }
+            }
+            return enemyString.toString().trim();
+        }
+    }
+
+    public String getDescription()
+    {
+        return description + "\n" + getItemString() + "\n" + getEnemyString();
+    }
 }
 
